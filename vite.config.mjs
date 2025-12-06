@@ -13,7 +13,6 @@ export default defineConfig({
     Vue({ template: { transformAssetUrls } }),
     VitePWA({
       registerType: 'autoUpdate',
-
       manifest: {
         name: 'Vault Mate',
         short_name: 'VaultMate',
@@ -38,6 +37,13 @@ export default defineConfig({
 
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/.*\.(js|css|html|png|svg)/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'assets-cache' },
+          },
+        ],
       },
     }),
     Vuetify({
