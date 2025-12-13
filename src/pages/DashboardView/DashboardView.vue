@@ -252,7 +252,8 @@ const saveFile = () => {
   offset += ivBytes.length
 
   finalFile.set(encryptedBytes, offset)
-
+  console.log(encryptedBytes)
+  console.log(offset)
   const blob = new Blob([finalFile], {
     type: 'application/octet-stream',
   })

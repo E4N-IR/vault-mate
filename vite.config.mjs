@@ -8,6 +8,7 @@ import { defineConfig } from 'vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
+  base: '/vault-mate/',
   plugins: [
     VueRouter(),
     Vue({ template: { transformAssetUrls } }),
@@ -20,7 +21,8 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/vault-mate/',
+        scope: '/vault-mate/',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -34,7 +36,6 @@ export default defineConfig({
           },
         ],
       },
-
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
