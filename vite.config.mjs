@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 import Fonts from 'unplugin-fonts/vite'
 import Components from 'unplugin-vue-components/vite'
-import VueRouter from 'unplugin-vue-router/vite'
 // vite.config.js
 import { defineConfig } from 'vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
@@ -10,7 +9,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   base: '/vault-mate/',
   plugins: [
-    VueRouter(),
     Vue({ template: { transformAssetUrls } }),
     VitePWA({
       registerType: 'autoUpdate',
@@ -21,7 +19,7 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/vault-mate/',
+        start_url: '/vault-mate/#/',
         scope: '/vault-mate/',
         icons: [
           {
@@ -40,7 +38,12 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
           {
-            urlPattern: /\/.*\.(js|css|html|png|svg)/,
+            urlPattern: ({ request }) => request.destination === 'document',
+            handler: 'NetworkFirst',
+            options: { cacheName: 'html-cache' },
+          },
+          {
+            urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: { cacheName: 'assets-cache' },
           },
@@ -63,8 +66,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: [
       'vuetify',
-      'vue-router',
-      'unplugin-vue-router/runtime',
       'unplugin-vue-router/data-loaders',
       'unplugin-vue-router/data-loaders/basic',
     ],
